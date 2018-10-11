@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+    function showData(data){       
+        document.querySelector("#ip").innerText="IP Address is:- "+data.ip;
+        document.querySelector("#continent").innerText="Server is in :-"+data.continent_name;
+        document.querySelector("#country").innerText="The country Name is :- "+data.country_name;
+        document.querySelector("#lat").innerText="Latitude :   "+data.latitude;
+        document.querySelector("#long").innerText="Longitude :   "+data.longitude;
+    }    
+
+    function printData(){
+        var domain = document.querySelector("#domname").value;
+        console.log("DOmain Name is - ", domain);
+        var url="http://api.ipstack.com/"+domain+"?access_key=9e2f13b8865fe7ae4cec950a53a6e276&format=1";
+        console.log("Before Call");
+        var promise = fetch(url); //Async Call Type
+        console.log("After Call",promise);
+        for(let i = 0; i<=10; i++){
+            console.log("Time Pass",i);
+        }
+        promise.then(response=>{
+            response.json().then(data=>{
+                showData(data);
+                document.querySelector("#domainname").innerText="Domain is :- www."+domain; 
+                console.log("Data is :- ",data);
+                console.log("IP Address is ",data.ip);
+                console.log("Continent is ",data.continent_name);
+                console.log("Country is ",data.country_name);
+                console.log("Latitude ",data.latitude);
+                console.log("Longitude ",data.longitude);
+            }).catch(err=>{
+                console.log("Invalid JSON",err);
+            })
+        }).catch(err=>{
+            console.log("Server Problem",err);
+        })
+    }
+    </script>
+</head>
+<body>
+    <label for="">Enter Domain Name (Without www.)</label>
+    <input type="text" id="domname" placeholder="Enter Domain Name">
+    <button id="search" onclick="printData()">Search</button>
+    <fieldset>
+        <legend>Domain Info. </legend>
+        <h1 id="domainname"></h1>
+        <h2 id="ip"></h2>
+        <h3 id="continent"></h3>
+        <h3 id="country"></h3>
+        <h3 id="lat"></h3>
+        <h3 id="long"></h3>
+    </fieldset>
+</body>
+</html>
